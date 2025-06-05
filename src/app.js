@@ -6,7 +6,7 @@ console.log(ENVIRONMENT)
 connectDB()
 
 //express
-import express from 'express'
+import express, { request } from 'express'
 
 //Routes
 import usersRouter from "./routes/users.router.js";
@@ -19,9 +19,43 @@ app.use(cors())
 app.use(express.json())//configurar que nuesta API pueda recibir JSOn en un body
 
 app.get('/', (request, response) => {
-    if(true){
-    response.send('hello soy el respuestas')
-} else { response.send("Ups! paso algo")}
+    if (true) {
+        response.send('hello soy el respuestas')
+    } else { response.send("Ups! paso algo") }
+})
+i
+app.get('/ping', (request, response) => {
+    response.send('<h1> Server is running</h1>')
+})
+
+
+
+app.get('/private-info', authorizationMiddleware, (request, response) => {
+    try {
+        const authorization_header = request.headers['authorization']
+        console.log(authorization_token)
+        const authorization_token = authorization_header.split(' ')[1]
+
+        const authorization_token_payload = jwt.verify(authorization_token, ENVIRONMENT.JWT_SECRET_KEY)
+        console.log(authorization_token_payload)
+
+        response.send("clave super imporante que solo un usuario deberia oder usar")
+    }
+    catch (error) {
+        if (error instanceof jwt.jsonWebTokenError) {
+            response.status(401).send({
+                ok: false,
+                message: ' Token Invalido',
+                status: 400
+            })
+        } else {
+            response.status(500).send({
+                ok: false,
+                message: 'no no va',
+                status: 500
+            })
+        }
+    }
 })
 
 app.use('/api/users', usersRouter)
@@ -40,7 +74,7 @@ const enviarMailTest = async () => {
         from: ENVIRONMENT.GMAIL_USERNAME,
         to: ENVIRONMENT.GMAIL_USERNAME,
         subject: 'Prueba de envio de',
-        html:"<h1>Holaperro</h1>"
+        html: "<h1>Holaperro</h1>"
     })
     console.log("mail.eviado", result)
 }

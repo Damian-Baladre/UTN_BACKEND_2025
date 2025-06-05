@@ -51,4 +51,4 @@ async verifyUserEmail ({email}){
     }  
 
 const userRepository = new UserRepository()
-export default UserRepository
+export default userRepository

@@ -9,6 +9,7 @@ const usersRouter = express.Router()
 usersRouter.get('/', usersController.getAll)
 // /api/users + '/'
 usersRouter.post('/register', usersController.register)
+usersRouter.post('/login', usersController.login)
 usersRouter.get('/verify', usersController.verify)
 
 // api/users/api/users/hola

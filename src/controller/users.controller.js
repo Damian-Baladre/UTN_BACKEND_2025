@@ -4,7 +4,7 @@ import usersRepository from "../repositories/users.repository.js";
 import bcrypt from "bcrypt";
 import jwt from 'jsonwebtoken'
 
-const sendVerification = async (email, name, redirect_url) => {
+const sendVerification = async ({email, name, redirect_url}) => {
     const result = await transporter.sendMail(
         {
             from: ENVIRONMENT.GMAIL_USERNAME,
@@ -44,12 +44,12 @@ class UserController {
         
             //emitimos un token con cierta firma
             //
-        const verification_token = jwt.sing({email: request.body.email}, ENVIRONMENT.JWT_SECRET_KEY )
+        const verification_token = jwt.sign({email: request.body.email}, ENVIRONMENT.JWT_SECRET_KEY )
 
         await sendVerification(
             {
                 email: request.body.email,
-                nameL: request.body.name,
+                name: request.body.name,
                 redirect_url: `http://localhost:3000/api/users/verify?verify_token=${verification_token}`
             }
         )
@@ -136,7 +136,8 @@ class UserController {
             //3ro crear un token con los datos no sensibles del usuario (sesio)
             const authorization_token = jwt.sign({
                 name: user.name,
-                email: user.emai,
+                email: user.email,
+                id: user._id,
                 created_at: user.created_at
             },
         ENVIRONMENT.JWT_SECRET_KEY )
