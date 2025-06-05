@@ -10,6 +10,7 @@ export const ENVIRONMENT = {
     PORT: process.env.PORT,
     GMAIL_PASSWORD: process.env.GMAIL_PASSWORD,
     GMAIL_USERNAME: process.env.GMAIL_USERNAME,
+    DB_MONGO_PASSWORD: process.env.DB_MONGO_PASSWORD
 }
 //suele ser un objeto
 //module.exports = {
