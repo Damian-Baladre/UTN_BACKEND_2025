@@ -1,8 +1,7 @@
 import dotenv from 'dotenv'
-//Como el type de nuestro proyecto es commonjs no podemos usar export y import
-//const dotenv = require('dotenv');
+
 dotenv.config()
-//Esto carga las variables de entorno en la variable process.envconsole.log('Environment variables loaded:', ENVIRONMENT);
+
 export const ENVIRONMENT = {
     API_KEY: process.env.API_KEY,
     DB_URL: process.env.DB_URL,
@@ -13,10 +12,4 @@ export const ENVIRONMENT = {
     DB_MONGO_PASSWORD: process.env.DB_MONGO_PASSWORD,
     JWT_SECRET_KEY: process.env.JWT_SECRET_KEY
 }
-//suele ser un objeto
-//module.exports = {
-//    ENVIRONMENT: ENVIRONMENT
-//}//
-
-
 

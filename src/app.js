@@ -1,68 +1,65 @@
 import { ENVIRONMENT } from "./environment.js";
 import { connectDB } from "./config/db.config.js"
 import cors from 'cors'
+import authorizationMiddleware from './middlewares/auth.middleware.js'
 
 console.log(ENVIRONMENT)
 connectDB()
 
-//express
-import express, { request } from 'express'
+import express, { request, response } from 'express'
 
-//Routes
 import usersRouter from "./routes/users.router.js";
 import productsRouter from "./routes/products.router.js";
+import workspaceRouter from "./routes/workpace.router.js"
 
-const app = express() //crea una aplicacion express
+const app = express()
 
 app.use(cors())
 
-app.use(express.json())//configurar que nuesta API pueda recibir JSOn en un body
+app.use(express.json())
 
 app.get('/', (request, response) => {
     if (true) {
         response.send('hello soy el respuestas')
     } else { response.send("Ups! paso algo") }
 })
-i
-app.get('/ping', (request, response) => {
-    response.send('<h1> Server is running</h1>')
+
+app.get('/test-tonto', (request, response) => {
+    response.send('hola soy el tontos')
 })
 
-
+app.get('/ping', (request, response) => {
+    response.send('<h1>Server is running</h1>')
+})
 
 app.get('/private-info', authorizationMiddleware, (request, response) => {
     try {
-        const authorization_header = request.headers['authorization']
-        console.log(authorization_token)
-        const authorization_token = authorization_header.split(' ')[1]
-
-        const authorization_token_payload = jwt.verify(authorization_token, ENVIRONMENT.JWT_SECRET_KEY)
-        console.log(authorization_token_payload)
-
-        response.send("clave super imporante que solo un usuario deberia oder usar")
+        response.send("clave super importante que solo el usuario beria poder acceder")
     }
     catch (error) {
-        if (error instanceof jwt.jsonWebTokenError) {
-            response.status(401).send({
-                ok: false,
-                message: ' Token Invalido',
-                status: 400
-            })
-        } else {
-            response.status(500).send({
-                ok: false,
-                message: 'no no va',
-                status: 500
-            })
-        }
+        response.status(500).send({
+            ok: false,
+            message: 'error interno del servidor',
+            status: 500
+        })
     }
+})
+app.post('/crear-workspace', authorizationMiddleware, (request, response) => {
+    console.log(request.user)
+    response.send('workspace creado por el usuario ' + request.user.id)
 })
 
 app.use('/api/users', usersRouter)
 app.use('/api/products', productsRouter)
+app.use('/api/workspace', workspaceRouter)
 
-app.post('/users', usersRouter)
-app.post('/api/products', productsRouter)
+//app.post('/api/users', usersRouter) 
+//app.post('/api/products', productsRouter)
+//app.post('/api/workspace', workspaceRouter)
+
+
+//app.get('/api/workspace', workspaceRouter)
+
 
 app.listen(ENVIRONMENT.PORT, () => {
     console.log(`la app se esta escuchando en el http://localhost:${ENVIRONMENT.PORT}`)
@@ -78,50 +75,3 @@ const enviarMailTest = async () => {
     })
     console.log("mail.eviado", result)
 }
-
-//users
-//import User from "./models/User.model.js"
-//import UserRepository from "./repositories/users.repository.js";
-////Worspace
-//import Workspace from "./models/Worspace.model.js";
-//import WorkspaceRepository from "./repositories/workspace.repository.js"
-////WoprkspaceMember
-//import WorkspaceMembersRepository from './repositories/workspaceMembers.respository.js'
-//import WorkspaceMember from "./models/WorkspaceMembers.model.js";
-//import {AVAILABLE_ROLES_WORKSPACE_MEMBERS} from './dictonaries/availableRoles.dictonary.js'
-////channel
-//import Channel from "./models/Channel.model.js";
-//import ChannelRepository from "./repositories/channel.repository.js"
-////channelMembers
-//import ChannelMembers from "./models/ChannelMembers.model.js";
-//import ChannelMembersRepository from "./repositories/channelMembers.repository.js";
-////ChannelMessage
-//import channelMessages from "./models/ChannelMessages.model.js";
-//import channelMessagesRepository from "./repositories/channelMesseges.repository.js";
-////products
-//import productsRepository from "./repositories/products.repository.js";
-//controlladores
-//import usersController from "./controller/users.controller.js";
-//import productsController from "./controller/products.controller.js";
-//enviarMailTest()
-
-
-/*const User = require("./models/User.model.js")
-const userRepository = require("./repositories/users.repository.js")
-const Workspace = require('./models/Worspace.model.js')
-
-connectDB()
-
-console.log("hola crack genion idolo maquina")
-console.log(ENVIRONMENT) 
-
-userRepository.create({name: "Sim", password:"Fela1234", email:"simelrey@gmail.com"})
-
-const workspace = new Workspace({
-    name: 'Espacio de trabajo namberuan',
-    description: 'Hola gatos...',
-    owner_id: '67f820c57d1ab72d2f404233'
-})
-
-workspace.save()*/
-

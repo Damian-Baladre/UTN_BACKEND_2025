@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { ENVIRONMENT } from '../environment';
+import { ENVIRONMENT } from '../environment.js';
  const authorizationMiddleware = (request, response, next) => {
     try {
         const authorization_header = request.headers['authorization']
@@ -8,7 +8,6 @@ import { ENVIRONMENT } from '../environment';
         const authorization_token_payload = jwt.verify(authorization_token, ENVIRONMENT.JWT_SECRET_KEY)
         //se suelen guardar los datos ede sesion dentro de reques.user o request.session
         request.user = authorization_token_payload
-        console.log(authorization_token_payload)
         next()
     }
     catch (error) {
