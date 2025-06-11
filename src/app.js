@@ -11,7 +11,7 @@ import express, { request, response } from 'express'
 import usersRouter from "./routes/users.router.js";
 import productsRouter from "./routes/products.router.js";
 import workspaceRouter from "./routes/workpace.router.js"
-
+import workspaceMembersRouter from "./routes/workspaceMembers.router.js";
 const app = express()
 
 app.use(cors())
@@ -52,6 +52,7 @@ app.post('/crear-workspace', authorizationMiddleware, (request, response) => {
 app.use('/api/users', usersRouter)
 app.use('/api/products', productsRouter)
 app.use('/api/workspace', workspaceRouter)
+app.use('/api/members', workspaceMembersRouter)
 
 //app.post('/api/users', usersRouter) 
 //app.post('/api/products', productsRouter)
@@ -66,6 +67,7 @@ app.listen(ENVIRONMENT.PORT, () => {
 })
 
 import transporter from './config/mail.config.js'
+import workspaceMembresRouter from "./routes/workspaceMembers.router.js";
 const enviarMailTest = async () => {
     const result = await transporter.sendMail({
         from: ENVIRONMENT.GMAIL_USERNAME,

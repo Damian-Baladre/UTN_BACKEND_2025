@@ -27,17 +27,20 @@ class WorkspaceRepository {
             throw error
         }
     }
-    async deleteWorkspace(_id) {
-        try {
-            const workspaceDeleteById = await Workspace.findByIdAndDelete(_id);
-            if (!workspaceDeleteById){
-                throw new Error("workspace no encontrado")
+    async deleteWorkspaceFromOwner(owner_id, workspace_id) {
+        const result = await Workspace.findOneAndDelete({ owner_id, _id: workspace_id })
+        if (!result) {
+            throw {
+                status: 404,
+                message: 'el workspace a eliminar no existe'
             }
-            return workspaceDeleteById
-        } catch (error) {
-            console.error('Ups! ha ocurrido un error al eliminarel workspace', error)
-            throw error
         }
+    }
+    async deleteById(workspace_id) {
+        return await Workspace.findOneAndDelete({ _id: workspace_id })
+    }
+    async getById(workspace_id){
+        return await Workspace.findById(workspace_id)
     }
 }
 

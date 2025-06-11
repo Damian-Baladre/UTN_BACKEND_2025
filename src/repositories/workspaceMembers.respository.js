@@ -1,23 +1,23 @@
 import WorkspaceMember from "../models/WorkspaceMembers.model.js";
 
 class WorkspaceMembersRepository {
-    async create({ worspace_id, user_id, role, created_at}) {
-        try {
+    async create({ workspace_id, user_id, role}) {
+
             const workspaceMember = new WorkspaceMember({
-            worspace_id,
+            workspace_id,
             user_id,
-            role,
-            created_at
+            role
         })
 
         await workspaceMember.save()
-        console.log("miembrows agregados exitosamente al worspace")
-        }
-        catch(error){
-            console.log("algo anda mal, mi rey")
-        }
     }
-}
+    async getByWorkspaceId(workspace_id){
+        WorkspaceMember.find({workspace_id: workspace_id})
+    }
+    async getAllByUserId (user_id){
+        
+    }
 
+}
 const workspaceMembersRepository = new WorkspaceMembersRepository()
 export default workspaceMembersRepository

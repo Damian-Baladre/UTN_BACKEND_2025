@@ -1,4 +1,6 @@
 import workspaceRepository from '../repositories/workspace.repository.js';
+import workspaceMembersRepository from '../repositories/workspaceMembers.respository.js'
+import { AVAILABLE_ROLES_WORKSPACE_MEMBERS } from '../dictonaries/availableRoles.dictonary.js';
 
 class WorkspaceController {
     async create(request, response) {
@@ -6,7 +8,12 @@ class WorkspaceController {
             const { name, description } = request.body
             const { id } = request.user
 
-            await workspaceRepository.create({ name, description, owner_id: id })
+            const workspace_created = await workspaceRepository.create({ name, description, owner_id: id })
+            await workspaceMembersRepository.create({
+                workspace_id: workspace_created._id,
+                user_id: id,
+                role: AVAILABLE_ROLES_WORKSPACE_MEMBERS.ADMIN
+            })
             response.status(201).json(
                 {
                     ok: true,
@@ -15,7 +22,6 @@ class WorkspaceController {
                     data: {}
                 }
             )
-
         }
         catch (error) {
             if (error.status) {
@@ -39,40 +45,18 @@ class WorkspaceController {
         }
 
     }
-    async getAll(request, response) {
+    async getAllByMember(request, response) {
+        const{id} = request.user
+
         response.send()
     }
-    async deleteWorkspace(request, response) {
+    async delete(request, response) {
         try {
             const workspace_id = request.params.workspace_id
             const user_id = request.user.id
-            const workspace = await workspaceRepository.getAll(user_id)
-            const workspaceToDelete = workspace.find(workspace => workspace._id.toString() === workspace_id)
+            await workspaceRepository.deleteWorkspaceFromOwner(user_id, workspace_id)
 
-            if (!workspaceToDelete) {
-                response.status(404).json(
-                    {
-                        ok: false,
-                        message: "workspace no encontrado",
-                        status: 404
-                    }
-                )
-                return
-            }
-            if (workspaceToDelete.owner_id.toString() !== user_id) {
-                response.status(404).json(
-                    {
-                        ok: false,
-                        message: "No eres quien para borrar este workspace",
-                        status: 403
-                    }
-                )
-                return
-            }
-
-            await workspaceRepository.deleteWorkspace(workspace_id)
-
-            response.status(200).json(
+             response.status(200).json(
                 {
                     ok: true,
                     message: 'Workspace eliminado correctamente',
@@ -81,6 +65,8 @@ class WorkspaceController {
                 }
             )
             return
+
+           
         } catch (error) {
             if (error.status) {
                 response.status(error.status).send(
