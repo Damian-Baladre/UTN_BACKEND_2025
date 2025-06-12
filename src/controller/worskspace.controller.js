@@ -46,9 +46,16 @@ class WorkspaceController {
 
     }
     async getAllByMember(request, response) {
-        const{id} = request.user
-
-        response.send()
+        const { id } = request.user
+        const workspaces = await workspaceMembersRepository.getAllByUserId(id)
+        response.json({
+            ok: true,
+            status: 200,
+            message: 'Lista de Workspaces',
+            data: {
+                workspaces: workspaces
+            }
+        })
     }
     async delete(request, response) {
         try {
@@ -56,7 +63,7 @@ class WorkspaceController {
             const user_id = request.user.id
             await workspaceRepository.deleteWorkspaceFromOwner(user_id, workspace_id)
 
-             response.status(200).json(
+            response.status(200).json(
                 {
                     ok: true,
                     message: 'Workspace eliminado correctamente',
@@ -66,7 +73,7 @@ class WorkspaceController {
             )
             return
 
-           
+
         } catch (error) {
             if (error.status) {
                 response.status(error.status).send(
