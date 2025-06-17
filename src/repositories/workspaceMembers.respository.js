@@ -28,7 +28,9 @@ class WorkspaceMembersRepository {
         })
         return workspaces_list_formatted
     }
-
+    async findByWorkspaceAndUser (workspace_id, user_id) {
+        return await WorkspaceMember.findOne({ workspace_id, user_id });
+    }
 }
 const workspaceMembersRepository = new WorkspaceMembersRepository()
 export default workspaceMembersRepository

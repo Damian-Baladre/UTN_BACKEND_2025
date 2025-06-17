@@ -4,6 +4,16 @@ import workspaceMembersController from '../controller/workspaceMembers.controlle
 
 const workspaceMembersRouter = express.Router()
 
-workspaceMembersRouter.post('/:workspace_id', authorizationMiddleware, workspaceMembersController.add)
+workspaceMembersRouter.post(
+    '/:workspace_id',
+    authorizationMiddleware,
+    workspaceMembersController.add
+)
+
+workspaceMembersRouter.get(
+    '/:workspace_id',
+    authorizationMiddleware,
+    workspaceMembersController.getMembersByWorkspaceId
+)
 
 export default workspaceMembersRouter

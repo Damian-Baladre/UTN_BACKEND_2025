@@ -5,11 +5,60 @@ import workspaceMembersRepository from '../repositories/workspaceMembers.resposi
 
 class WorkspaceMembersController {
 
-    async workspaceMembersList(request, response) {
-        const members = await workspaceMembersRepository.getAllByWorkspaceId(workspace_id)
-        if (!members.find(members => { })) {
 
+    async getMembersByWorkspaceId(request, response) {
+        try {
+            const workspace_id = request.params.workspace_id
+            const { id } = request.user;
+
+            const workspace = await workspaceRepository.getById(workspace_id)
+            if (!workspace) {
+                return response.status(404).json(
+                    {
+                        message: 'Workspace no se encuentra'
+                    }
+                )
+            }
+            const isMember = await workspaceMembersRepository.findByWorkspaceAndUser(workspace_id, id)
+            if (!isMember) {
+                return response.status(403).json(
+                    {
+                        message: 'No tienes permiso para hacer esto'
+                    }
+                )
+            }
+            const members = await workspaceMembersRepository.getAllByWorkspaceId(workspace_id)
+            {
+                return response.status(200).json(
+                    {
+                        ok: true,
+                        message: 'Workspace eliminado correctamente',
+                        status: 200,
+                        data: members
+                    }
+                )
+            }
+        } catch (error) {
+            if (error.status) {
+                response.status(error.status).send(
+                    {
+                        message: error.message,
+                        status: error.status,
+                        ok: false
+                    }
+                )
+                return
+            } else {
+                console.log('Hubo un error', error)
+                response.status(500).json(
+                    {
+                        message: 'Error interno del servidor',
+                        ok: false
+                    }
+                )
+            }
         }
+
     }
 
     async add(request, response) {

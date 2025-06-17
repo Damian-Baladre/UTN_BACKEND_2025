@@ -54,20 +54,11 @@ app.use('/api/products', productsRouter)
 app.use('/api/workspace', workspaceRouter)
 app.use('/api/members', workspaceMembersRouter)
 
-//app.post('/api/users', usersRouter) 
-//app.post('/api/products', productsRouter)
-//app.post('/api/workspace', workspaceRouter)
-
-
-//app.get('/api/workspace', workspaceRouter)
-
-
 app.listen(ENVIRONMENT.PORT, () => {
     console.log(`la app se esta escuchando en el http://localhost:${ENVIRONMENT.PORT}`)
 })
 
 import transporter from './config/mail.config.js'
-import workspaceMembresRouter from "./routes/workspaceMembers.router.js";
 const enviarMailTest = async () => {
     const result = await transporter.sendMail({
         from: ENVIRONMENT.GMAIL_USERNAME,
