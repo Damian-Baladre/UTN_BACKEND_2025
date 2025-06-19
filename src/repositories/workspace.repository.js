@@ -40,7 +40,7 @@ class WorkspaceRepository {
         return await Workspace.findOneAndDelete({ _id: workspace_id })
     }
     async getById(workspace_id){
-        return await Workspace.findById(workspace_id)
+        return await Workspace.findById(workspace_id)        
     }
 }
 

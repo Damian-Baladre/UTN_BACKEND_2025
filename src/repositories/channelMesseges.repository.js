@@ -18,6 +18,14 @@ class ChannelMessagesRepository {
             console.log('aLGO no anDa mWy B13n')
         }
     }
+    async getAllByChannelId(channelId) {
+    try {
+      const messages = await ChannelMessages.find({ channel_id: channelId });
+      return messages;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 const channelMessagesRepository = new ChannelMessagesRepository();
