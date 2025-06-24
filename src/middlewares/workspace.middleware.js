@@ -3,18 +3,17 @@ import workspaceMembersRepository from "../repositories/workspaceMembers.resposi
 
 const workspaceMiddleware = async (req, res, next) => {
 
-    const workspace_id = req.params.workspace_id;
+    const workspaceId= req.params.workspace_id;
     const userId = req.user.id;
+
        
     try {
-        const workspace = await workspaceRepository.getById(workspace_id);
-        console.log("workspaces_ID1", workspace)
+        const workspace = await workspaceRepository.getById(workspaceId);
         if (!workspace) {
             throw { status: 404, message: 'Workspace not found' };
         }
 
-        const member = await workspaceMembersRepository.getMemberByWorkspaceIdAndUserId(workspace_id, userId);
-        console.log("member", member)
+        const member = await workspaceMembersRepository.getMemberByWorkspaceIdAndUserId(workspaceId, userId);
         if (!member) {
             throw { status: 403, message: 'You are not a member of this workspace' };
         }

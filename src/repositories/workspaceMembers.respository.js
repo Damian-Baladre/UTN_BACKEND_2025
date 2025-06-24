@@ -29,7 +29,7 @@ class WorkspaceMembersRepository {
         return workspaces_list_formatted
     }
     async getMemberByWorkspaceIdAndUserId (workspace_id, user_id) {
-        return await WorkspaceMember.findOne({ workspace_id, user_id });
+        return await WorkspaceMember.findOne({workspace_id: workspace_id, user_id: user_id });
     }
 }
 const workspaceMembersRepository = new WorkspaceMembersRepository()

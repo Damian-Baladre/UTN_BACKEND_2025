@@ -1,15 +1,15 @@
 import mongoose from "mongoose";
 
 const ChannelMessageSchema = new mongoose.Schema({
-    member_channel_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        ref: 'ChannelMembers',
-    },
     channel_id: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: 'channel',
+    },
+    user_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'Users'
     },
     content: {
         type: String,

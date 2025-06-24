@@ -113,28 +113,6 @@ class ChannelController {
             }
         }
     }
-    async getMessagesByChannelId(request, response) {
-        try {
-            const { channel_id } = request.params;
-            const result = await channelService.getMessagesByChannelId(channel_id);
-            response.status(result.status).json(result);
-        } catch (error) {
-            if (error.status) {
-                response.status(error.status).json({
-                    message: error.message,
-                    status: error.status,
-                    ok: false
-                });
-            } else {
-                console.error('Hubo un error', error);
-                response.status(500).json({
-                    message: error.message,
-                    status: 500,
-                    ok: false
-                });
-            }
-        }
-    }
 }
 
 const channel_controller = new ChannelController()

@@ -1,17 +1,23 @@
 import express from 'express'
-import channelController from '../controller/channel.controller.js'
-import authorizationMiddleware from '../middlewares/auth.middleware.js'
+import channelMessageController from '../controller/channelMessage.controller.js'
 import workspaceMiddleware from '../middlewares/workspace.middleware.js'
 import channelMiddleware from '../middlewares/channel.middleware.js'
+import authorizationMiddleware from '../middlewares/auth.middleware.js'
 
 const channelMessageRouter = express.Router()
+channelMessageRouter.use(authorizationMiddleware)
 
 
-channelMessageRouter.get('/:workspace_id/:channel_id',
-    authorizationMiddleware,
+channelMessageRouter.post('/:workspace_id/:channel_id', 
     workspaceMiddleware,
     channelMiddleware,
-    channelController.getMessagesByChannelId
+    channelMessageController.create
+)
+
+channelMessageRouter.get('/:workspace_id/:channel_id',
+    workspaceMiddleware,
+    channelMiddleware,
+    channelMessageController.getAllByChannelId
 )
 
 

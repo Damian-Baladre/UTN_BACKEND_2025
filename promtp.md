@@ -54,3 +54,9 @@ crear un middleware llamado channelMilddleware, va a validar que el canal exista
 }
 
 necesito un unservicio y un controlador para poder obtener los mensajes de un canal. la ruta sera /api/messages/:channel_id. si no existe el canal lanzara un error 404. 
+
+
+-----
+
+
+estoy teniendo un problema con el workspace.middleware. estoy usando (const userId = req.user.id;) ppara extraer el id del usuario pero no me esta funcionando, eso da undefined. Necesito traer el id del usuario para corroborar qeu sea miembro.
