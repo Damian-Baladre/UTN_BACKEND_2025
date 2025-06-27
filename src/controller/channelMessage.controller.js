@@ -40,7 +40,7 @@ class ChannelMessageController {
     async getAllByChannelId(request, response) {
         try {
             const channel_id = request.params.channel_id;
-            const messagesList = await channelMessagesService.getAllByChannelId(channel_id);
+            const messagesList = await channelMessagesService.getAllByChannelId({channel_id});
             response.json({
                 ok: true,
                 status: 200,

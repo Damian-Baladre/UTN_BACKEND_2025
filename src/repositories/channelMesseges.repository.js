@@ -10,7 +10,6 @@ class ChannelMessagesRepository {
           content,
         }
       )
-
       await channelMessage.save();
       console.log('channelMessage', channelMessage)
       return { channelMessage }
@@ -24,7 +23,7 @@ class ChannelMessagesRepository {
     try {
       const channelMessages = await ChannelMessages.find({ channel_id: channel_id })
         .populate('user_id', 'name');
-
+      console.log('channelMessages', channelMessages)
       const channelMessagesFotmatted = channelMessages.map((channelMessages) => {
         return {
           _id: channelMessages._id,
@@ -33,6 +32,7 @@ class ChannelMessagesRepository {
           created_at: channelMessages.created_at,
         }
       })
+      console.log('channelMessagesFotmatted', channelMessagesFotmatted)
       return channelMessagesFotmatted;
     } catch (error) {
     console.error('Error obteniendo mensajes:', error);

@@ -4,7 +4,7 @@ const ChannelMessageSchema = new mongoose.Schema({
     channel_id: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
-        ref: 'channel',
+        ref: 'Channel',
     },
     user_id: {
         type: mongoose.Schema.Types.ObjectId,

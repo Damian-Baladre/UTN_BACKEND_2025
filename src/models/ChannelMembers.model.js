@@ -4,7 +4,7 @@ const channelMembersSchema = new mongoose.Schema(
     {
         member_id:{
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'user',
+            ref: 'Users',
             required: true,
         },
         channel_id:{

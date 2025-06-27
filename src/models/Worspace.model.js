@@ -10,7 +10,7 @@ const workspaceSchema = new mongoose.Schema({
     },
     owner_id:{
         type: mongoose.Schema.Types.ObjectId, //esto valida que el type sea ObjectId
-        ref: 'User', //valida q cuando se cree un ws el owner_id sea un user_id valido
+        ref: 'Users', //valida q cuando se cree un ws el owner_id sea un user_id valido
         required: true
     },
     created_at: {

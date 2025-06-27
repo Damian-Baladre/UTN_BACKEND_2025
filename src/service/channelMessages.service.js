@@ -8,7 +8,6 @@ class ChannelMessagesService {
         try {
             await channelMessagesRepository.create({ user_id, channel_id, content });
             const messagesList = await channelMessagesRepository.getAllByChannelId(channel_id);
-            console.log('esto funciona', messagesList);
             return messagesList;
         }
         catch (error) {
@@ -18,7 +17,6 @@ class ChannelMessagesService {
     }
     async getAllByChannelId({ channel_id }) {
         const messagesList = await channelMessagesRepository.getAllByChannelId(channel_id);
-
         return messagesList;
     }
 }
